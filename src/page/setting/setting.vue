@@ -12,6 +12,11 @@
       <span>设置</span>
     </div>
     <div class="setting-content">
+      <div class="avatar" @click="updateInfo()">
+        <img src="" >
+        ID: {{id}}
+        <Icon type="ios-arrow-forward" class="forward"/>
+      </div>
        <div class="item" @click="changePassword()">
          <span>修改密码</span>
          <Icon type="ios-arrow-forward" class="forward"/>
@@ -37,49 +42,20 @@
     data () {
       let vm = this;
       return   {
-        formValidate: {
-          name: '',
-          mail: '',
-          city: '',
-          gender: '',
-          interest: [],
-          userInfoNamePwd:''
-        },
-        ruleValidate: {
-          name: [
-            { required: true, message: 'The name cannot be empty', trigger: 'blur' }
-          ],
-          mail: [
-            { required: true, message: 'Mailbox cannot be empty', trigger: 'blur' },
-            { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
-          ],
-          city: [
-            { required: true, message: 'Please select the city', trigger: 'change' }
-          ],
-          gender: [
-            { required: true, message: 'Please select gender', trigger: 'change' }
-          ],
-          interest: [
-            { required: true, type: 'array', min: 1, message: 'Choose at least one hobby', trigger: 'change' },
-            { type: 'array', max: 2, message: 'Choose two hobbies at best', trigger: 'change' }
-          ],
-          date: [
-            { required: true, type: 'date', message: 'Please select the date', trigger: 'change' }
-          ],
-          time: [
-            { required: true, type: 'string', message: 'Please select time', trigger: 'change' }
-          ],
-          userInfoNamePwd: [
-            { required: true, message: 'Please enter a personal introduction', trigger: 'blur' },
-            { type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur' }
-          ]
-        }
+        id:window.sessionStorage.getItem("userinfoId"),
+
       }
     },
     created: function () {
 
     },
     methods:{
+
+      updateInfo () {
+        let vm = this;
+        vm.$router.push({'path': '/myBaseInfo'});
+      },
+
       changePassword () {
           let vm = this;
           vm.$router.push({'path': '/changePassword'});
@@ -142,6 +118,28 @@
  .setting-content{
    margin-top: 20px;
    width:100%;
+   .avatar{
+     width: 100%;
+     background: #fff;
+     height: 90px;
+     line-height: 90px;
+     border-bottom: 1px solid #ececec;
+     /* padding: 10px 20px; */
+     padding-left: 15px;
+     cursor: pointer;
+     img{
+       width: 70px;
+       height: 70px;
+       margin-right: 5px;
+       /*display: block;*/
+       border-radius: 50%;
+     }
+     .forward{
+       float: right;
+       margin-top: 42px;
+       margin-right: 10px;
+     }
+   }
    .item{
      width: 100%;
      background: #fff;

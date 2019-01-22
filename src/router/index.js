@@ -8,7 +8,9 @@ import Register from './register/register'
 
 import Setting from './setting/setting'
 import ForgetPassword from './forgetPassword/forgetPassword'
-
+import ApplyUpgrade from './applyUpgrade/applyUpgrade'
+import AuditUpgrade from './auditUpgrade/auditUpgrade'
+import MyTeam from './myTeam/myTeam'
 
 Vue.use(Router)
 const Layout = r => require.ensure([], () => r(require('@/page/layout.vue')), 'Layout');
@@ -30,7 +32,10 @@ export default new Router({
         ...NodeOverview,
         ...Register,
         ...Setting,
-        ...ForgetPassword
+        ...ForgetPassword,
+        ...ApplyUpgrade,
+        ...AuditUpgrade,
+        ...MyTeam
       ]
     },
     {

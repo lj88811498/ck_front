@@ -9,32 +9,23 @@
   <div>
     <div class="register_head">
       <Icon type="ios-arrow-back" class="backIcon" @click="back()"/>
-      <span>修改密码</span>
+      <span>我的资料</span>
     </div>
+    <p style="margin-top: 10px;">账号设置</p>
     <div class="formValidate">
-      <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" >
-        <FormItem  prop="oldPwd" class="itemContent">
-          <Input v-model="formValidate.oldPassord" placeholder="请输入您的旧密码" type="password">
-          <Icon type="md-lock" slot="prefix"></Icon>
+      <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="70">
+        <FormItem  prop="userinfoNickname" class="itemContent" label="姓名">
+          <Input v-model="formValidate.userinfoNickname" placeholder="请输入您的姓名" >
           </Input>
         </FormItem>
-        <FormItem prop="newPwd" class="itemContent">
-          <Input v-model="formValidate.newPassord" placeholder="请输入您的新密码" type="password">
-          <Icon type="md-lock" slot="prefix"></Icon>
+        <FormItem prop="userinfoTel" class="itemContent" label="手机号码">
+          <Input v-model="formValidate.userinfoTel" placeholder="请输入您的手机号码" >
           </Input>
         </FormItem>
-        <FormItem prop="sureNewPwd" class="itemContent">
-          <Input v-model="formValidate.sureNewPwd" placeholder="请确认新密码" type="password" @on-change="changeVal()">
-          <Icon type="md-lock" slot="prefix"></Icon>
-          </Input>
-          <small class="login-form-tips" v-if="showErrorPwd">{{tips}}</small>
-        </FormItem>
-        <FormItem  prop="phone">
-          <Input v-model="formValidate.phone" placeholder="请输入手机号码">
-          <Icon type="ios-person-outline" slot="prefix"/>
+        <FormItem prop="userinfoWx" class="itemContent" label="微信账号">
+          <Input v-model="formValidate.userinfoWx" placeholder="请输入微信账号" >
           </Input>
         </FormItem>
-
 
         <FormItem>
           <Button type="primary" @click="handleSubmit('formValidate')">确认修改</Button>
@@ -63,21 +54,19 @@
       return   {
         showErrorPwd:false,
         formValidate: {
-          oldPassord: '',
-          newPassord: '',
-          sureNewPwd: '',
-          phone: '',
+          userinfoNickname: '',
+          userinfoTel: '',
+          userinfoWx: '',
 
         },
         ruleValidate: {
-          oldPassord: [
-            { required: true, message: '请输入旧密码', trigger: 'blur' }
+          userinfoNickname: [
+            { required: true, message: '请输入姓名', trigger: 'blur' }
           ],
-          newPassord: [
-            { required: true, message: '请输入新密码', trigger: 'blur' },
-            { type: 'string', min: 6,max:20, message: '请输入6-20位密码', trigger: 'blur' }
+          userinfoWx: [
+            { required: true, message: '请输入微信账号', trigger: 'blur' },
           ],
-          phone: [
+          userinfoTel: [
             { required: true, message: '请输入手机号码', trigger: 'blur' },
             { type: 'number', message: '手机号码格式不正确', trigger: 'blur',transform(value){
               let myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
@@ -92,30 +81,38 @@
       }
     },
     created: function () {
-
+       this.getDetail();
     },
     methods:{
 
       //新密码确认
-      changeVal: function () {
+      getDetail: function () {
         let vm = this;
-        if (vm.formValidate.newPassord != vm.formValidate.sureNewPwd) {
-          vm.tips = "两次密码输入不一致";
-          vm.showErrorPwd = true;
-        } else {
-          vm.tips = "";
-          vm.showErrorPwd = false;
-        }
+        let userinfoTel = {
+          userinfoTel:window.sessionStorage.getItem("userinfoTel")
+        };
+        vm.api.baseInfo(userinfoTel).then((res) => {
+           vm.formValidate.userinfoNickname = res.userinfoNickname;
+          vm.formValidate.userinfoWx = res.userinfoWx;
+          vm.formValidate.userinfoTel = res.userinfoTel;
+        }).catch((error) => {
+          vm.$Loading.error()
+        })
       },
 
       handleSubmit (name) {
-          let vm = this;
+        let vm = this;
         this.$refs[name].validate((valid) => {
           if (valid) {
-            vm.formValidate.userInfoId = window.sessionStorage.getItem("userinfoId")
-            vm.api.changePwd(vm.formValidate).then((res) => {
-             vm.$Message.success("密码修改成功");
-             vm.$router.push({'path': '/'});
+            vm.formValidate.userInfoId = window.sessionStorage.getItem("userinfoId");
+            vm.formValidate.userinfoHead = "";
+            vm.formValidate.userInfoSurname = "";
+            vm.formValidate.userInfoSex = "";
+            vm.formValidate.userInfoProvince = "";
+            vm.formValidate.userInfoCity = "";
+            vm.api.updateBaseInfo(vm.formValidate).then((res) => {
+              vm.$Message.success("基本信息修改成功");
+              //vm.$router.push({'path': '/'});
             }).catch((error) => {
               vm.$Loading.error()
             })

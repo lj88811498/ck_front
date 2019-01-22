@@ -12,43 +12,45 @@
       <span>创客新零售会员注册</span>
     </div>
     <div class="formValidate">
-      <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" >
-        <FormItem  prop="name">
-          <Input v-model="formValidate.name" placeholder="默认推荐号">
+      <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" v-if="registerAuth">
+        <FormItem  >
+          <Input v-model="formValidate.userinfoCode" placeholder="默认推荐号" readonly disabled>
           <Icon type="ios-person-outline" slot="prefix"/>
           </Input>
 
         </FormItem>
-        <FormItem  prop="mail">
-          <Input v-model="formValidate.mail" placeholder="请输入下级手机号码">
+        <FormItem  prop="userinfoTel">
+          <Input v-model="formValidate.userinfoTel" placeholder="请输入下级手机号码" >
           <Icon type="ios-person-outline" slot="prefix"/>
           </Input>
         </FormItem>
-        <FormItem prop="mail">
-          <Input v-model="formValidate.mail" placeholder="请输入下级微信号">
+        <FormItem prop="userinfoWx">
+          <Input v-model="formValidate.userinfoWx" placeholder="请输入下级微信号">
           <Icon type="ios-person-outline" slot="prefix"/>
           </Input>
         </FormItem>
-        <FormItem  prop="mail">
-          <Input v-model="formValidate.mail" placeholder="请输入下级姓名">
+        <FormItem  prop="userinfoNickname">
+          <Input v-model="formValidate.userinfoNickname" placeholder="请输入下级姓名">
           <Icon type="ios-person-outline" slot="prefix"/>
           </Input>
         </FormItem>
-        <FormItem  prop="userInfoNamePwd" class="itemContent">
-          <Input v-model="formValidate.userInfoNamePwd" placeholder="请输入下级登录初始密码" type="password">
+        <FormItem  prop="userinfoPwd" class="itemContent">
+          <Input v-model="formValidate.userinfoPwd" placeholder="请输入下级登录初始密码" type="password">
           <Icon type="md-lock" slot="prefix"></Icon>
           </Input>
         </FormItem>
         <FormItem prop="userInfoNamePwd" class="itemContent">
-          <Input v-model="formValidate.userInfoNamePwd" placeholder="请确认密码" type="password">
+          <Input v-model="formValidate.userInfoNamePwd" placeholder="请确认密码" type="password" @on-change="changeVal()">
           <Icon type="md-lock" slot="prefix"></Icon>
           </Input>
+          <small class="login-form-tips" v-if="showErrorPwd">{{tips}}</small>
         </FormItem>
         <FormItem>
           <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
           <!--<Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>-->
         </FormItem>
       </Form>
+      <div v-if="!registerAuth" class="registerAuth">暂无帮助注册权限!</div>
     </div>
 
   </div>
@@ -56,7 +58,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  /* eslint-disable indent,semi */
+  /* eslint-disable indent,semi,no-unused-vars,no-trailing-spaces */
   import Header from '../../components/header/header.vue'
   import ContentTitle from '../../components/contentTitle/contentTitle.vue'
   import Data from '../../config/nodeOverview/nodeOverview'
@@ -66,58 +68,95 @@
       Header,
       ContentTitle,
     },
+
+
     data () {
       let vm = this;
+// eslint-disable-next-line no-multi-spaces
       return   {
+        registerAuth:true,
+        showErrorPwd:false,
         formValidate: {
-        name: '',
-          mail: '',
-          city: '',
-          gender: '',
-          interest: [],
-        userInfoNamePwd:''
+          userinfoCode: '',
+          userinfoTel: '',
+          userinfoWx: '',
+          userinfoNickname: '',
+          userinfoPwd: '',
       },
       ruleValidate: {
-        name: [
-          { required: true, message: 'The name cannot be empty', trigger: 'blur' }
+        userinfoCode: [
+          { required: false, message: '推荐号必填', trigger: 'blur' }
         ],
-          mail: [
-          { required: true, message: 'Mailbox cannot be empty', trigger: 'blur' },
-          { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
+        userinfoTel: [
+          { required: true, message: '请输入手机号码', trigger: 'blur' },
+          { type: 'number', message: '手机号码格式不正确', trigger: 'blur',transform(value){
+              let myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+              if (!myreg.test(value)) {
+                  return false;
+              } else {
+                  return Number(value);
+              }
+          } }
         ],
-          city: [
-          { required: true, message: 'Please select the city', trigger: 'change' }
+        userinfoWx: [
+          { required: true, message: '请输入下级微信号', trigger: 'blur' }
         ],
-          gender: [
-          { required: true, message: 'Please select gender', trigger: 'change' }
+        userinfoNickname: [
+          { required: true, message: '请输入商家姓名', trigger: 'blur' }
         ],
-          interest: [
-          { required: true, type: 'array', min: 1, message: 'Choose at least one hobby', trigger: 'change' },
-          { type: 'array', max: 2, message: 'Choose two hobbies at best', trigger: 'change' }
-        ],
-          date: [
-          { required: true, type: 'date', message: 'Please select the date', trigger: 'change' }
-        ],
-          time: [
-          { required: true, type: 'string', message: 'Please select time', trigger: 'change' }
-        ],
-        userInfoNamePwd: [
-          { required: true, message: 'Please enter a personal introduction', trigger: 'blur' },
-          { type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur' }
+        userinfoPwd: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { type: 'string', max: 20, message: '密码长度不超过20个字符', trigger: 'blur' }
         ]
       }
     }
     },
     created: function () {
-
+       this.getUserInfoLv();
     },
     methods:{
+
+
+        /*获取星级*/
+      getUserInfoLv () {
+          let vm = this;
+          let level = window.sessionStorage.getItem("userinfoLv");
+          vm.formValidate.userinfoCode =  window.sessionStorage.getItem("userinfoCode");
+          if (level === '0') {
+             vm.registerAuth = false;
+           } else {
+            vm.registerAuth = true;
+          }
+      },
+
+      //新密码确认
+      changeVal: function () {
+        let vm = this;
+        if (vm.formValidate.userinfoPwd != vm.formValidate.userInfoNamePwd) {
+          vm.tips = "两次密码输入不一致";
+          vm.showErrorPwd = true;
+        } else {
+          vm.tips = "";
+          vm.showErrorPwd = false;
+        }
+      },
+
+
       handleSubmit (name) {
+          let vm = this;
         this.$refs[name].validate((valid) => {
           if (valid) {
-            this.$Message.success('Success!');
+            delete vm.formValidate.userinfoCode;
+            delete vm.formValidate.userInfoNamePwd;
+            vm.formValidate.userInfoId = window.sessionStorage.getItem("userinfoId");
+            vm.api.register(vm.formValidate).then((res) => {
+                this.$Message.success('注册成功!');
+                this.$router.push({'path': '/nodeOverview'});
+            }).catch((error) => {
+              vm.$Loading.error()
+            })
           } else {
-            this.$Message.error('Fail!');
+            this.$Message.error('注册失败');
           }
         })
       },
@@ -205,5 +244,16 @@
   .ivu-input-prefix i, .ivu-input-suffix i{
     line-height: 42px;
     font-size: 19px;
+  }
+  .login-form-tips{
+    color: #ed4014;
+    float: left;
+  }
+  .registerAuth{
+    width: 80%;
+    margin: 19% auto;
+    text-align: center;
+    font-size: 16px;
+    color: rgb(26, 196, 199);
   }
 </style>

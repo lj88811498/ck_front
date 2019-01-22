@@ -5,12 +5,12 @@
     </div>
     <Form ref="formInline" :model="formInline" :rules="ruleInline" inline id="login" class="login-form">
       <FormItem prop="user" class="login-form-item">
-        <Input type="text" v-model="formInline.user" placeholder="请输入您的手机号码" class="item">
+        <Input type="text" v-model="formInline.userInfoName" placeholder="请输入您的手机号码" class="item">
         <Icon type="ios-person-outline" slot="prefix"/>
         </Input>
       </FormItem>
       <FormItem prop="password" class="login-form-item">
-        <Input type="password" v-model="formInline.password" class="item" placeholder="请输入您的密码">
+        <Input type="password" v-model="formInline.userinfoPwd" class="item" placeholder="请输入您的密码">
         <Icon type="md-lock" slot="prefix"></Icon>
         </Input>
       </FormItem>
@@ -23,18 +23,20 @@
 
 </template>
 <script>
+  /* eslint-disable indent,semi */
+
   export default {
     data () {
       return {
         formInline: {
-          user: '',
-          password: ''
+          userInfoName: '',
+          userinfoPwd: ''
         },
         ruleInline: {
-          user: [
-            { required: true, message: '请填写用户名', trigger: 'blur' }
+          userInfoName: [
+            { required: true, message: '请填写手机号码', trigger: 'blur' }
           ],
-          password: [
+          userinfoPwd: [
             { required: true, message: '请填写密码', trigger: 'blur' },
             { type: 'string', min: 6, message: '密码长度不能小于6位', trigger: 'blur' }
           ]
@@ -43,10 +45,26 @@
     },
     methods: {
       handleSubmit (name) {
+          let vm = this;
         this.$refs[name].validate((valid) => {
           if (valid) {
-            this.$Message.success('登录成功!')
-            this.$router.push({'path': '/nodeOverview'});
+            vm.api.login(vm.formInline).then((res) => {
+              if (!res) {
+                this.$Message.error('账号或密码错误!');
+              } else {
+                sessionStorage.setItem('userinfoLv', res.data.userinfoLv);
+                sessionStorage.setItem('userinfoId', res.data.userinfoId);
+                sessionStorage.setItem('userinfoNickname', res.data.userinfoNickname);
+                sessionStorage.setItem('userinfoTel', res.data.userinfoTel);
+                sessionStorage.setItem('userinfoCode', res.data.userinfoCode);
+                sessionStorage.setItem('token', res.token);
+                this.$Message.success('登录成功!');
+                this.$router.push({'path': '/nodeOverview'});
+
+              }
+            }).catch((error) => {
+              vm.$Loading.error()
+            })
           } else {
             this.$Message.error('表单验证失败!')
           }

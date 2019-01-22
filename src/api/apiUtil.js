@@ -1,3 +1,4 @@
+/* eslint-disable brace-style */
 /**
  * 作者 ：yhzzy
  *
@@ -6,7 +7,8 @@
  * 描述 ：api请求组件
  */
 import axios from 'axios'
-import { Notice } from 'iview';
+import { Notice } from 'iview'
+import {stringify} from 'qs'
 
 //let root;
 //let rootUrl;
@@ -64,13 +66,21 @@ const err_check = (code, msg, data) => {
       desc: '请求服务器出错',
       duration: 1
     });
-  }else {
-    console.log("其他");
+  } else if (code === 404){
     Notice.warning({
       title: '',
-      desc: '请求服务器出错',
+      desc: msg,
+      duration: 3
+    })
+  }
+  else {
+    console.log(msg);
+    Notice.warning({
+      title: '',
+      desc: msg,
       duration: 3
     });
+    return false;
   }
 
  return false
@@ -93,10 +103,23 @@ const sendApiInstance = (method, url, params, config = {}) => {
     url = url.replace('{resourceId}', params.resourceId);
   }
   let instance = createApiInstance(config)
-
+  instance.interceptors.request.use(
+    config => {
+      // 这里写死一个token，你需要在这里取到你设置好的token的值
+      // const token = '754fb49bd8274b55a5ecac4eefa73eeb';
+      const token = window.sessionStorage.getItem("token")
+      if (token) {
+        // 这里将token设置到headers中，header的key是Authorization，这个key值根据你的需要进行修改即可
+        config.headers.accessToken = token;
+      }
+      return config
+    },
+    error => {
+      return Promise.reject(error)
+    });
   instance.interceptors.response.use(response => {
       let code = response.data.code;
-      let msg = response.data.message;
+      let msg = response.data.msg;
       let data = response.data.page;
       console.log(response);
       console.log(code);
@@ -137,7 +160,9 @@ const sendApiInstance = (method, url, params, config = {}) => {
       data: params
     }
   }
-
+  if (method === 'post') {
+    url = `${url}?${stringify(params)}`;
+  }
   if (method === 'get' && !params.ID) {
     params = {
       params: params

@@ -8,10 +8,10 @@
 <template>
   <Header class="layout-header-bar cl">
     <div class="header-opreation">
-      <p>ID:</p>
-      <p>等级:</p>
-      <p>姓名:</p>
-      <p>推荐码:</p>
+      <p>ID: {{userinfoId}}</p>
+      <p>等级: {{userinfoLv}}</p>
+      <p>姓名: {{userinfoNickname}}</p>
+      <p>推荐码: {{userinfoCode}}</p>
    <!--   <Dropdown trigger="click" placement="bottom-start">
         <a class="user-name" href="javascript:void(0)">
           <Icon type="ios-contact"></Icon>
@@ -27,11 +27,14 @@
       </Dropdown>-->
       <!--<a class="login-out" href="" @click="logout">登录</a>-->
     </div>
-    <img src="../../../static/images/set.png" @click="setting()">
+    <Icon type="ios-cog" class="img" @click="setting()"/>
+    <!--<img src="../../../static/images/set.png" @click="setting()">-->
   </Header>
 </template>
 
 <script>
+  /* eslint-disable indent */
+
   export default{
     data () {
       return {
@@ -53,8 +56,11 @@
             frontUrl: '/changePassword'
           }
         ],
-        userName: window.sessionStorage.getItem("userName")
+
       }
+    },
+    created: function () {
+     this.detail();
     },
     methods: {
       logout () {
@@ -63,7 +69,39 @@
       personalInfo (frontUrl) {
         this.$router.push({'path': frontUrl});
       },
-
+      detail () {
+          let vm = this;
+          vm.userinfoLv = window.sessionStorage.getItem("userinfoLv");
+          vm.userinfoId  = window.sessionStorage.getItem("userinfoId");
+          vm.userInfoTel = window.sessionStorage.getItem("userInfoTel");
+          vm.userinfoNickname = window.sessionStorage.getItem("userinfoNickname");
+          vm.userinfoCode = window.sessionStorage.getItem("userinfoCode");
+        if (vm.userinfoCode === "" || vm.userinfoCode === 'null') {
+          vm.userinfoCode = '暂无'
+        }
+        switch (vm.userinfoLv) {
+          case "0":
+            return   vm.userinfoLv = '普通会员';
+          case "1":
+            return   vm.userinfoLv = '一星会员';
+          case "2":
+            return    vm.userinfoLv= '二星会员';
+          case "3":
+            return    vm.userinfoLv= '三星会员';
+          case "4":
+            return  vm.userinfoLv= '四星会员';
+          case "5":
+            return   vm.userinfoLv= '五星会员';
+          case "6":
+            return   vm.userinfoLv= '六星会员';
+          case "7":
+            return  vm.userinfoLv= '七星会员';
+          case "8":
+            return   vm.userinfoLv= '八星会员';
+          case "9":
+            return   vm.userinfoLv= '九星会员';
+        }
+      },
       setting () {
         let vm = this;
         vm.$router.push({'path': '/setting'});
@@ -96,7 +134,8 @@
       line-height: 20px;
     }
     }
-    img{
+    .img{
+      font-size: 24px;
       width: 25px;
       height: 25px;
       position: absolute;

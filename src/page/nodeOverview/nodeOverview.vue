@@ -38,15 +38,16 @@
         </ul>
       </Card>
       <div class="node-footer">
-        <p>客服姓名:创客客服</p>
-        <p>客服电话:QQ2930364644</p>
+        <p>客服姓名:  {{name}}</p>
+        <p>客服电话:  {{tel}}</p>
+        <p>客服QQ:  {{qq}}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  /* eslint-disable indent,semi */
+  /* eslint-disable indent,semi,spaced-comment */
   import Header from '../../components/header/header.vue'
   import ContentTitle from '../../components/contentTitle/contentTitle.vue'
   import Data from '../../config/nodeOverview/nodeOverview'
@@ -58,23 +59,22 @@
     },
     data () {
       let vm = this;
-      return Data(vm).setData()
+      return {
+          name: '',
+          tel: '',
+          qq: ''
+      }
     },
     created: function () {
       this.list();
     },
     methods:{
       list () {
-          let vm = this;
-      /*  this.$axios.get('/static/api/data.json').then((res) => {
-          console.log(res);
-          vm.listJson = res.data;
-          console.log(vm.listJson);
-        })*/
-        vm.api[vm.apis.listApi]().then((res) => {
-         console.log(res);
-          vm.listJson = res.records;
-          console.log(vm.listJson);
+        let vm = this;
+        vm.api.customerServiceNumbers().then((res) => {
+           vm.name = res[0].name;
+           vm.tel = res[0].phone;
+           vm.qq = res[0].qq;
         }).catch((error) => {
           vm.$Loading.error();
         });
@@ -84,6 +84,13 @@
           let vm = this;
           if (name === "注册") {
             vm.$router.push({'path': '/register'});
+          } else if (name === "申请升级") {
+            vm.$router.push({'path': '/ApplyUpgrade'});
+
+          } else if (name === "审核升级") {
+            vm.$router.push({'path': '/auditUpgrade'});
+          } else if (name === "我的团队") {
+            vm.$router.push({'path': '/myTeam'});
           }
       }
     }
