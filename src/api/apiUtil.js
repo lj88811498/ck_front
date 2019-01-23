@@ -51,7 +51,7 @@ const createApiInstance = (config = {}) => {
 const err_check = (code, msg, data) => {
   if (code === 200 || code === 0 || code === '0') {
     return true
-  } else if (code === 401) {
+  } else if (code === '-1' || code === 1) {
     Notice.warning({
       title: '',
       desc: '请求服务器出错',
@@ -74,7 +74,6 @@ const err_check = (code, msg, data) => {
     })
   }
   else {
-    console.log(msg);
     Notice.warning({
       title: '',
       desc: msg,
@@ -121,8 +120,6 @@ const sendApiInstance = (method, url, params, config = {}) => {
       let code = response.data.code;
       let msg = response.data.msg;
       let data = response.data.page;
-      console.log(response);
-      console.log(code);
 
       if (err_check(code, msg, data)) {
         return Promise.resolve(data)

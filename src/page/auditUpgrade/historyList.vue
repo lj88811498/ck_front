@@ -12,8 +12,8 @@
       <span>历史订单</span>
     </div>
     <div class="formValidate">
-      <div v-if="auditUp" class="item">
-        <div v-for="(item,key) in detailData" class="item_content" v-if="detailData.length>0">
+      <div v-if="auditUp" class="item"  v-for="(item,key) in detailData">
+        <div class="item_content" v-if="detailData.length>0">
           <div >
             <p>对方ID：{{item.upgrade_id}}</p>
             <p>姓名：{{item.userInfo_nickname}}</p>
@@ -173,6 +173,7 @@
       text-align: center;
       font-size: 16px;
       background: #fff;
+      margin-bottom: 20px;
       /*color: rgb(26, 196, 199);*/
       .item_content{
         div:first-of-type{
