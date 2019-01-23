@@ -52,6 +52,8 @@
               if (!res) {
                 this.$Message.error('账号或密码错误!');
               } else {
+
+                sessionStorage.setItem('userinfoName', res.data.userinfoName);
                 sessionStorage.setItem('userinfoLv', res.data.userinfoLv);
                 sessionStorage.setItem('userinfoId', res.data.userinfoId);
                 sessionStorage.setItem('userinfoNickname', res.data.userinfoNickname);
@@ -82,6 +84,14 @@
 .ivu-input{
   height: 40px;
 }
+/*适配手机  媒体查询*/
+@media only screen and (max-width: 768px) {
+  .ivu-input-prefix i, .ivu-input-suffix i{
+    line-height: 38px;
+    font-size: 3rem!important;
+  }
+}
+
 </style>
 <style lang="less" scoped>
   .register_head{
@@ -91,16 +101,8 @@
     border-bottom: 1px solid #e8e8e8;
     color:#000;
     text-align: center;
-    .backIcon{
-      text-align: left;
-      float: left;
-      font-size: 30px;
-      /* vertical-align: unset; */
-      margin-top: 9px;
-      cursor: pointer;
-    }
     span{
-      font-size: 16px;
+      font-size: 1.8rem;
       /*font-weight: bold;*/
     }
   }
@@ -208,7 +210,7 @@
             outline: none;
             color: #444;
             letter-spacing: 2px;
-            font-size: 14px;
+            font-size: 0.875rem;
             &:focus{
               box-shadow: none;
             }
@@ -249,7 +251,7 @@
 
   .ivu-input-prefix i, .ivu-input-suffix i{
     line-height: 40px;
-    font-size: 19px;
+    font-size: 1.8rem;
   }
   .forgetPassword{
     color: #999;

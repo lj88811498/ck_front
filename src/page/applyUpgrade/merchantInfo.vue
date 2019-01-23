@@ -13,12 +13,12 @@
     </div>
     <div class="formValidate">
       <ul>
-        <li v-for="(item,key) in detailData">
+        <li v-for="(item,key) in detailData" v-if="detailData.length>0">
           <p>姓名: {{item.userinfoName}}</p>
           <p>手机号码：{{item.userinfoTel}}</p>
           <p>微信号：{{item.userinfoWx}}</p>
         </li>
-
+        <li v-if="detailData.length <=0">暂无商家信息</li>
 
       </ul>
     </div>
@@ -52,8 +52,8 @@
       getDetailData () {
         let vm = this;
         let userInfoId = {
-          //userInfoId:window.sessionStorage.getItem("userinfoId")
-          userInfoId: 9
+          userInfoId:window.sessionStorage.getItem("userinfoId")
+         // userInfoId: 9
         };
         vm.api.getMerchants(userInfoId).then((res) => {
          vm.detailData = res;

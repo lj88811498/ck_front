@@ -13,18 +13,21 @@
     </div>
     <div class="historyList" @click="historyList()">历史订单</div>
     <div class="formValidate">
-      <div v-if="auditUp" class="item">
-        <div >
-          <p>对方ID：</p>
-          <p>姓名：</p>
-          <p>准等级：</p>
-          <p>手机号码：</p>
-          <p>微信号：</p>
+      <div v-if="auditUp" class="item" >
+        <div v-for="(item,key) in detailData" class="item_content" v-if="detailData.length > 0 && status">
+          <div >
+            <p>对方ID：{{item.upgrade_id}}</p>
+            <p>姓名：{{item.userInfo_nickname}}</p>
+            <p>准等级：{{item.userInfo_lv}}</p>
+            <p>手机号码：{{item.userInfo_tel}}</p>
+            <p>微信号：{{item.userInfo_wx}}</p>
+          </div>
+          <div>
+            <p>  <Button type="default"  @click="submitApply('1',item.upgrade_id,item.userInfo_id)" >同意</Button></p>
+            <p>  <Button type="default"  @click="submitApply('2',item.upgrade_id,item.userInfo_id)">拒绝</Button></p>
+          </div>
         </div>
-       <div>
-          <p>  <Button type="default"  @click="submitApply()" >同意</Button></p>
-          <p>  <Button type="default"  @click="submitApply()">拒绝</Button></p>
-       </div>
+        <div v-if="detailData.length <= 0" class="noContent">暂无审核内容</div>
       </div>
       <div v-if="!auditUp" class="audit">
         暂无审核升级权限！
@@ -50,17 +53,18 @@
     data () {
       let vm = this;
       return   {
-
-
+         detailData:[],
+        status:true
       }
     },
     created: function () {
-      this.getauditUp()
+      this.getauditUp();
+      this.getDetail();
     },
     methods:{
 
       getauditUp () {
-          let vm = this;
+         let vm = this;
          let level = window.sessionStorage.getItem("userinfoLv");
          if (level === '0') {
           vm.auditUp = false;
@@ -69,19 +73,67 @@
          }
       },
 
+      getDetail () {
+          let vm = this;
+          let userInfoId = {
+            userInfoId: window.sessionStorage.getItem("userinfoId")
+            //userInfoId: 7
+          };
+          vm.api.orderList(userInfoId).then((res) => {
+            for (let i = 0; i < res.length; i++) {
+              if (res[i].userInfo_lv === '0') {
+                res[i].userInfo_lv = '普通会员';
+              } else if (res[i].userInfo_lv === '1') {
+                res[i].userInfo_lv = '一星会员';
+              } else if (res[i].userInfo_lv === '2') {
+                res[i].userInfo_lv = '二星会员';
+              } else if (res[i].userInfo_lv === '3') {
+                res[i].userInfo_lv = '三星会员';
+              } else if (res[i].userInfo_lv === '4') {
+                res[i].userInfo_lv = '四星会员';
+              } else if (res[i].userInfo_lv === '5'){
+                res[i].userInfo_lv = '五星会员';
+              } else if (res[i].userInfo_lv === '6') {
+                res[i].userInfo_lv = '六星会员';
+              } else if (res[i].userInfo_lv === '7') {
+                res[i].userInfo_lv = '七星会员';
+              } else if (res[i].userInfo_lv === '8') {
+                res[i].userInfo_lv = '八星会员';
+              } else if (res[i].userInfo_lv === '9') {
+                res[i].userInfo_lv = '九星会员';
+              }
+            }
+            vm.detailData = res;
+          }).catch((error) => {
+             vm.$Loading.error();
+          });
+      },
+
       historyList () {
           let vm = this;
         vm.$router.push({'path': '/historyList'});
       },
 
-      submitApply () {
-        /* this.$refs[name].validate((valid) => {
-         if (valid) {
-         this.$Message.success('Success!');
-         } else {
-         this.$Message.error('Fail!');
-         }
-         })*/
+      submitApply (status,upgradeId,userInfoId) {
+          let vm = this;
+          let params = {
+            upgradeId: upgradeId,
+            upgradeStatus: status,
+            userinfoId: userInfoId
+          };
+        vm.api.auditEscalation(params).then((res) => {
+          if (status === '1') {
+              vm.$Message.success('审核通过');
+          }
+          if (status === '2') {
+            vm.$Message.error('审核未通过');
+          }
+          vm.status = false;
+          vm.$router.push({'path': '/nodeOverview'});
+        }).catch((error) => {
+          vm.$Loading.error();
+        });
+
       },
 
 
@@ -111,6 +163,9 @@
     .formValidate form{
       width:100%!important;
       display: inline-block;
+    }
+    .formValidate div.item{
+      font-size: 2.3rem!important;
     }
   }
 </style>
@@ -147,7 +202,7 @@
     background-color: #fff;
     color: #000000;
     /* float: right; */
-    width: 133px;
+    /*width: 133px;*/
     text-align: center;
     cursor: pointer;
   }
@@ -156,29 +211,32 @@
     margin-top: 20px;
     margin-left: 10px;
     div.item{
-      width: 90%;
+      width: 100%;
       /*margin: 19% auto;*/
       height: 140px;
       text-align: center;
-      font-size: 16px;
+      font-size: 1.5rem;
       background: #fff;
       /*color: rgb(26, 196, 199);*/
-      div:first-of-type{
-        float: left;
-        padding-left: 10px;
-        padding-top: 10px;
-        p{
-          text-align: left;
+      .item_content{
+        div:first-of-type{
+          float: left;
+          padding-left: 10px;
+          padding-top: 10px;
+          p{
+            text-align: left;
+          }
+        }
+        div:last-of-type{
+          float: right;
+          padding-right: 20px;
+          margin-top: 20px;
+          p{
+            margin-bottom: 20px;
+          }
         }
       }
-      div:last-of-type{
-        float: right;
-        padding-right: 20px;
-        margin-top: 20px;
-        p{
-          margin-bottom: 20px;
-        }
-      }
+
     }
 
 
@@ -186,5 +244,15 @@
   .ivu-input-prefix i, .ivu-input-suffix i{
     line-height: 42px;
     font-size: 19px;
+  }
+  .noContent{
+   padding-top: 5%;
+  }
+  .audit{
+    width: 80%;
+    margin: 19% auto;
+    text-align: center;
+    font-size: 16px;
+    color: rgb(26, 196, 199);
   }
 </style>

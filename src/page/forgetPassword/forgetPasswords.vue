@@ -13,18 +13,19 @@
     </div>
     <div class="formValidate">
       <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" >
-        <FormItem prop="userInfoNamePwd" class="itemContent">
-          <Input v-model="formValidate.userInfoNamePwd" placeholder="请输入您的新密码" type="password">
+        <FormItem prop="newPassord" class="itemContent">
+          <Input v-model="formValidate.newPassord" placeholder="请输入您的新密码" type="password">
           <Icon type="md-lock" slot="prefix"></Icon>
           </Input>
         </FormItem>
         <FormItem prop="userInfoNamePwd" class="itemContent">
-          <Input v-model="formValidate.userInfoNamePwd" placeholder="请确认新密码" type="password">
+          <Input v-model="formValidate.userInfoNamePwd" placeholder="请确认新密码" type="password" @on-change="changeVal()">
           <Icon type="md-lock" slot="prefix"></Icon>
           </Input>
+          <small class="login-form-tips" v-if="showErrorPwd">{{tips}}</small>
         </FormItem>
         <FormItem  prop="mail">
-          <Input v-model="formValidate.mail" placeholder="请输入手机号码">
+          <Input v-model="formValidate.userinfoTel" placeholder="请输入手机号码">
           <Icon type="ios-person-outline" slot="prefix"/>
           </Input>
         </FormItem>
@@ -55,42 +56,31 @@
     data () {
       let vm = this;
       return   {
+        showErrorPwd:false,
         formValidate: {
-          name: '',
-          mail: '',
-          city: '',
-          gender: '',
-          interest: [],
-          userInfoNamePwd:''
+          newPassord: '',
+          userInfoNamePwd: '',
+          userinfoTel: '',
         },
         ruleValidate: {
-          name: [
-            { required: true, message: 'The name cannot be empty', trigger: 'blur' }
-          ],
-          mail: [
-            { required: true, message: 'Mailbox cannot be empty', trigger: 'blur' },
-            { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
-          ],
-          city: [
-            { required: true, message: 'Please select the city', trigger: 'change' }
-          ],
-          gender: [
-            { required: true, message: 'Please select gender', trigger: 'change' }
-          ],
-          interest: [
-            { required: true, type: 'array', min: 1, message: 'Choose at least one hobby', trigger: 'change' },
-            { type: 'array', max: 2, message: 'Choose two hobbies at best', trigger: 'change' }
-          ],
-          date: [
-            { required: true, type: 'date', message: 'Please select the date', trigger: 'change' }
-          ],
-          time: [
-            { required: true, type: 'string', message: 'Please select time', trigger: 'change' }
+          newPassord: [
+            { required: true, message: '请输入新密码', trigger: 'blur' },
+            {type: 'string', max: 20, min:6, message: '密码长度为6-20个字符', trigger: 'blur'}
           ],
           userInfoNamePwd: [
-            { required: true, message: 'Please enter a personal introduction', trigger: 'blur' },
-            { type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur' }
-          ]
+            { required: true, message: '请确认密码', trigger: 'blur' },
+          ],
+          userinfoTel: [
+            { required: true, message: '请输入手机号码', trigger: 'blur' },
+            { type: 'number', message: '手机号码格式不正确', trigger: 'blur',transform(value){
+              let myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+              if (!myreg.test(value)) {
+                return false;
+              } else {
+                return Number(value);
+              }
+            } }
+          ],
         }
       }
     },
@@ -98,18 +88,38 @@
 
     },
     methods:{
+
+      //新密码确认
+      changeVal: function () {
+        let vm = this;
+        if (vm.formValidate.newPassord != vm.formValidate.userInfoNamePwd) {
+          vm.tips = "两次密码输入不一致";
+          vm.showErrorPwd = true;
+        } else {
+          vm.tips = "";
+          vm.showErrorPwd = false;
+        }
+      },
+
       handleSubmit (name) {
+          let vm = this;
+        if (vm.showErrorPwd) {
+          return
+        }
         this.$refs[name].validate((valid) => {
           if (valid) {
-            this.$Message.success('Success!');
+            vm.api.forgetPwd(vm.formValidate).then((res) => {
+              this.$Message.success('提交成功!');
+              this.$router.push({'path': '/'});
+            }).catch((error) => {
+              vm.$Loading.error()
+            });
           } else {
-            this.$Message.error('Fail!');
+            this.$Message.error('提交失败!');
           }
         })
       },
-      handleReset (name) {
-        this.$refs[name].resetFields();
-      },
+
 
       back () {
         history.back(-1);
@@ -138,6 +148,17 @@
       width:100%!important;
       display: inline-block;
     }
+    .ivu-input-prefix i, .ivu-input-suffix i{
+      line-height: 38px;
+      font-size: 3rem!important;
+    }
+    .register_head .backIcon{
+      font-size: 4rem!important;
+      margin-top: 13px!important;
+    }
+    .register_head span{
+      font-size: 3rem!important;
+    }
   }
 </style>
 <style lang="less" scoped>
@@ -155,15 +176,19 @@
     .backIcon{
       text-align: left;
       float: left;
-      font-size: 30px;
+      font-size: 2.5rem;
       /* vertical-align: unset; */
       margin-top: 9px;
       cursor: pointer;
     }
     span{
-      font-size: 16px;
+      font-size: 1.8rem;
       /*font-weight: bold;*/
     }
+  }
+  .login-form-tips{
+    color: #ed4014;
+    float: left;
   }
   .formValidate{
     text-align: center;
@@ -189,7 +214,7 @@
 
   }
   .ivu-input-prefix i, .ivu-input-suffix i{
-    line-height: 42px;
-    font-size: 19px;
+    line-height: 40px;
+    font-size: 1.8rem;
   }
 </style>

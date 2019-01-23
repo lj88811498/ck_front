@@ -109,7 +109,14 @@
     }
   }
 </script>
-
+<style>
+  /*适配手机  媒体查询*/
+  @media only screen and (max-width: 768px) {
+    .layout-header-bar .header-opreation p{
+      font-size: 2.5rem!important;
+    }
+  }
+</style>
 <style lang="less" scoped>
   .ivu-icon-ios-contact{
     font-size: 28px;
@@ -132,6 +139,7 @@
     p{
       padding: 2px;
       line-height: 20px;
+      font-size: 1.5rem;
     }
     }
     .img{

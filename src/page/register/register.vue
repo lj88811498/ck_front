@@ -144,6 +144,9 @@
 
       handleSubmit (name) {
           let vm = this;
+          if (vm.showErrorPwd) {
+              return
+          }
         this.$refs[name].validate((valid) => {
           if (valid) {
             delete vm.formValidate.userinfoCode;

@@ -112,7 +112,6 @@
                 return  res.data[i].userinfoLv = '九星会员';
             }*/
           }
-          console.log(res.data);
           vm.detail = res.data;
          }).catch((error) => {
            vm.$Loading.error()
@@ -129,7 +128,7 @@
 <style>
   .ivu-input{
     height: 40px;
-    font-size: 16px;
+    font-size: 0.875rem;
   }
   .ivu-layout{
     background: none!important;
@@ -146,6 +145,16 @@
     .formValidate form{
       width:100%!important;
       display: inline-block;
+    }
+    .formValidate ul li{
+      font-size: 2.5rem!important;
+    }
+    .register_head .backIcon{
+      font-size: 4rem!important;
+      margin-top: 13px!important;
+    }
+    .register_head span{
+      font-size: 3rem!important;
     }
   }
 </style>
@@ -165,13 +174,13 @@
     .backIcon{
       text-align: left;
       float: left;
-      font-size: 30px;
+      font-size: 2.5rem;
       /* vertical-align: unset; */
       margin-top: 9px;
       cursor: pointer;
     }
     span:first-of-type{
-      font-size: 16px;
+      font-size: 1.8rem;
       /*font-weight: bold;*/
     }
 
@@ -187,7 +196,8 @@
        padding-left: 15px;
        background: #fff;
        height: 70px;
-       line-height: 32px;
+       line-height:27px;
+       font-size: 1.5rem;
        &:first-of-type{
          line-height: 46px;
          height: 46px;
@@ -195,10 +205,12 @@
            display: inline-block;
            &:first-of-type{
              float: left;
+
            }
            &:last-of-type{
              float: right;
              margin-right: 15px;
+             text-align: left;
            }
          }
        }
@@ -206,18 +218,19 @@
          display: inline-block;
          &:first-of-type{
            float: left;
+           text-align: left;
          }
          &:last-of-type{
            float: right;
            margin-right: 15px;
+           text-align: left;
+           width: 37%;
+
          }
        }
      }
    }
 
   }
-  .ivu-input-prefix i, .ivu-input-suffix i{
-    line-height: 42px;
-    font-size: 19px;
-  }
+
 </style>

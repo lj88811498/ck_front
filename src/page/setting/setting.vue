@@ -13,7 +13,7 @@
     </div>
     <div class="setting-content">
       <div class="avatar" @click="updateInfo()">
-        <img src="" >
+        <!--<img src="" >-->
         ID: {{id}}
         <Icon type="ios-arrow-forward" class="forward"/>
       </div>
@@ -21,7 +21,7 @@
          <span>修改密码</span>
          <Icon type="ios-arrow-forward" class="forward"/>
        </div>
-      <Button type="primary" @click="handleSubmit('formValidate')">退出账户</Button>
+      <Button type="primary" @click="logout()">退出账户</Button>
     </div>
 
   </div>
@@ -59,6 +59,26 @@
       changePassword () {
           let vm = this;
           vm.$router.push({'path': '/changePassword'});
+      },
+
+      logout () {
+          let vm = this;
+          let userInfoName = {
+            userInfoName: window.sessionStorage.getItem("userinfoName")
+          };
+        vm.api.logout(userInfoName).then((res) => {
+          window.sessionStorage.setItem("userinfoCode", "");
+          window.sessionStorage.setItem("userinfoId", "");
+          window.sessionStorage.setItem("userinfoLv", "");
+          window.sessionStorage.setItem("userinfoNickname", "");
+          window.sessionStorage.setItem("userinfoTel", "");
+          window.sessionStorage.setItem("token", "");
+          vm.$router.push({'path': '/'});
+        }).catch((error) => {
+          vm.$Loading.error();
+        });
+
+
       },
 
       back () {

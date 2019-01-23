@@ -111,6 +111,7 @@
     .infoList{
       width:95%!important;
       text-align: center;
+      padding-left: 10px!important;
     }
     .infoList li{
       /*float: left;*/

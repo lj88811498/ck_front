@@ -32,6 +32,21 @@ export default {
   getMerchants: { url: '/userInfo/getMerchants', method: 'get'},
 
   //申请升级
-  addUpGrade: { url: '/upgrade/add', method: 'post'}
+  addUpGrade: { url: '/upgrade/add', method: 'post'},
+
+  //忘记密码
+  forgetPwd: { url: '/userInfo/forgetPwd', method: 'post'},
+
+  //退出账户
+  logout: { url: '/userInfo/logout', method: 'post'},
+
+  //审核升级列表详情
+  orderList: { url: '/upgrade/orderList', method: 'get'},
+
+  //审核升级
+  auditEscalation: { url: '/upgrade/auditEscalation', method: 'post'},
+
+  //历史订单
+  historicalOrder: { url: '/upgrade/historicalOrder', method: 'get'}
 
 }

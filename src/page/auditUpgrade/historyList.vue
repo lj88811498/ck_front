@@ -13,17 +13,20 @@
     </div>
     <div class="formValidate">
       <div v-if="auditUp" class="item">
-        <div >
-          <p>对方ID：</p>
-          <p>姓名：</p>
-          <p>手机号码：</p>
-          <p>微信号：</p>
+        <div v-for="(item,key) in detailData" class="item_content" v-if="detailData.length>0">
+          <div >
+            <p>对方ID：{{item.upgrade_id}}</p>
+            <p>姓名：{{item.userInfo_nickname}}</p>
+            <p>手机号码：{{item.userInfo_tel}}</p>
+            <p>微信号：{{item.userInfo_wx}}</p>
+          </div>
+          <div>
+            <p>  <Button type="default"   >已审核</Button></p>
+          </div>
         </div>
-        <div>
-          <p>  <Button type="default"  @click="submitApply()" >已审核</Button></p>
-        </div>
+        <div v-if="detailData.length <= 0" style="padding-top: 5%">暂无历史订单</div>
       </div>
-      <div v-if="!auditUp" class="audit">
+      <div v-if="!auditUp " class="audit">
         暂无历史订单！
       </div>
     </div>
@@ -47,12 +50,13 @@
     data () {
       let vm = this;
       return   {
-
+          detailData: []
 
       }
     },
     created: function () {
-      this.getauditUp()
+      this.getauditUp();
+      this.getList();
     },
     methods:{
 
@@ -65,6 +69,21 @@
           vm.auditUp = true;
         }
       },
+
+
+      getList () {
+          let vm = this;
+          let params = {
+            userInfoId: window.sessionStorage.getItem("userinfoId")
+            //userInfoId: 7
+          };
+        vm.api.historicalOrder(params).then((res) => {
+             vm.detailData = res;
+        }).catch((error) => {
+          vm.$Loading.error();
+        });
+      },
+
 
       submitApply () {
         /* this.$refs[name].validate((valid) => {
@@ -155,22 +174,25 @@
       font-size: 16px;
       background: #fff;
       /*color: rgb(26, 196, 199);*/
-      div:first-of-type{
-        float: left;
-        padding-left: 10px;
-        padding-top: 10px;
-        p{
-          text-align: left;
+      .item_content{
+        div:first-of-type{
+          float: left;
+          padding-left: 10px;
+          padding-top: 10px;
+          p{
+            text-align: left;
+          }
+        }
+        div:last-of-type{
+          float: right;
+          padding-right: 20px;
+          margin-top: 20px;
+          p{
+            margin-bottom: 20px;
+          }
         }
       }
-      div:last-of-type{
-        float: right;
-        padding-right: 20px;
-        margin-top: 20px;
-        p{
-          margin-bottom: 20px;
-        }
-      }
+
     }
 
 

@@ -110,6 +110,9 @@
 
       handleSubmit (name) {
           let vm = this;
+        if (vm.showErrorPwd) {
+          return
+        }
         this.$refs[name].validate((valid) => {
           if (valid) {
             vm.formValidate.userInfoId = window.sessionStorage.getItem("userinfoId")
