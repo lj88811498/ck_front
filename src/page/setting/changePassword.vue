@@ -29,8 +29,8 @@
           </Input>
           <small class="login-form-tips" v-if="showErrorPwd">{{tips}}</small>
         </FormItem>
-        <FormItem  prop="phone">
-          <Input v-model="formValidate.phone" placeholder="请输入手机号码">
+        <FormItem  prop="userinfoTel">
+          <Input v-model="formValidate.userinfoTel" placeholder="请输入手机号码">
           <Icon type="ios-person-outline" slot="prefix"/>
           </Input>
         </FormItem>
@@ -66,7 +66,7 @@
           oldPassord: '',
           newPassord: '',
           sureNewPwd: '',
-          phone: '',
+          userinfoTel: '',
 
         },
         ruleValidate: {
@@ -77,7 +77,10 @@
             { required: true, message: '请输入新密码', trigger: 'blur' },
             { type: 'string', min: 6,max:20, message: '请输入6-20位密码', trigger: 'blur' }
           ],
-          phone: [
+          sureNewPwd: [
+            { required: true, message: '请确认新密码', trigger: 'blur' },
+          ],
+          userinfoTel: [
             { required: true, message: '请输入手机号码', trigger: 'blur' },
             { type: 'number', message: '手机号码格式不正确', trigger: 'blur',transform(value){
               let myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
@@ -115,6 +118,7 @@
         }
         this.$refs[name].validate((valid) => {
           if (valid) {
+              delete  vm.formValidate.sureNewPwd;
             vm.formValidate.userInfoId = window.sessionStorage.getItem("userinfoId")
             vm.api.changePwd(vm.formValidate).then((res) => {
              vm.$Message.success("密码修改成功");
