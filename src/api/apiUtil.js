@@ -54,19 +54,13 @@ const err_check = (code, msg, data) => {
   } else if (code === '-1' || code === 1) {
     Notice.warning({
       title: '',
-      desc: '请求服务器出错',
+      desc: '验证身份过期，请重新登录',
       duration: 1
     });
     setTimeout(function () {
       window.location.href = rootUrl;
     }, 1000);
-  } else if (code === 604) {
-    Notice.warning({
-      title: '',
-      desc: '请求服务器出错',
-      duration: 1
-    });
-  } else if (code === 404){
+  }  else if (code === 404){
     Notice.warning({
       title: '',
       desc: msg,

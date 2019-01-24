@@ -213,8 +213,9 @@
 
   }
   .ivu-input-prefix i, .ivu-input-suffix i{
-    line-height: 42px;
-    font-size: 19px;
+    line-height: 32px;
+    font-size: 2rem;
+    vertical-align: top;
   }
   .login-form-tips{
     color: #ed4014;

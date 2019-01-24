@@ -133,6 +133,7 @@
         /* line-height: 32px; */
         margin-top: 40px;
         padding-top: 11px;
+        text-align: left;
         /*line-height: 32px;*/
         p{
           height: 25px;

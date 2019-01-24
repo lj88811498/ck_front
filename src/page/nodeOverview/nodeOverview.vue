@@ -11,6 +11,28 @@
 
     <div class="main-content cl">
       <Header></Header>
+      <Carousel
+        v-model="value3"
+        :autoplay="true"
+        :autoplay-speed="2000"
+        :dots="dots"
+        :arrow="arrow"
+      >
+        <CarouselItem>
+          <div class="demo-carousel"><img src="../../../static/images/s1.jpg"></div>
+        </CarouselItem>
+        <CarouselItem>
+          <div class="demo-carousel"><img src="../../../static/images/s2.jpg"></div>
+        </CarouselItem>
+      </Carousel>
+      <div style="background:#333;">
+        <div id="tgBigox" ref="tgBigox" style="color:red">
+          <div id="tgGoox" ref="tgGoox">
+            <a>本系统只是客户商家信誉体系评定推送工具，全为自由自愿加入.所有商业环节与系统无关，系统不收费,不卖产品，无分销,无代理.无奖金.为社交私域流量新生态 打造精准粉丝！各自诚信为本!感恩遇见!只是提供互联网本质属性的工具。所有社交原则自律、一经投诉及查实出假，大，空问题，将冻结账号</a>
+          </div>
+        </div>
+      </div>
+
       <Card class="infoCard" :dis-hover="true">
         <ul class="infoList cl">
           <li @click="pageHref('注册')">
@@ -39,7 +61,7 @@
       </Card>
       <div class="node-footer">
         <p>客服姓名:  {{name}}</p>
-        <p>客服电话:  {{tel}}</p>
+        <!--<p>客服电话:  {{tel}}</p>-->
         <p>客服QQ:  {{qq}}</p>
       </div>
     </div>
@@ -51,6 +73,8 @@
   import Header from '../../components/header/header.vue'
   import ContentTitle from '../../components/contentTitle/contentTitle.vue'
   import Data from '../../config/nodeOverview/nodeOverview'
+//  import   '../../../static/js/jquery.min'
+  import   '../../config/jquery.min.js'
   export default{
     name: 'nodeOverview',
     components: {
@@ -60,13 +84,32 @@
     data () {
       let vm = this;
       return {
+         value3:0,
+         dots:'none',
+         timer:null,
+         arrow:'never',
           name: '',
           tel: '',
-          qq: ''
+          qq: '',
+          index:0,
+         /* scrollWidth: 768,
+          textWidth: 750*/
+        scrollWidth: 0,
+        textWidth: 0
       }
+    },
+    mounted: function () {
+      setTimeout(this.scrolls(),1000);
+    },
+    updated: function () {
+
+     /* console.log(this.$refs["tgBigox"].style);
+      console.log(this.$refs["tgBigox"]);*/
+
     },
     created: function () {
       this.list();
+     // this.scroll()
     },
     methods:{
       list () {
@@ -80,6 +123,27 @@
         });
       },
 
+      //文字滚动
+      scrolls () {
+        let vm = this;
+        this.$nextTick(() =>
+        {
+          this.scrollWidth = $("#tgBigox").width();
+          this.textWidth = $("#tgGoox").width();
+        })
+
+        //console.log(document.getElementById("tgBigox").style.width);
+        let i = vm.scrollWidth;
+        this.timer = setInterval(function() {
+          i--;
+          if(i < -vm.textWidth ) {
+            i = vm.scrollWidth;
+          }
+          $('#tgGoox').animate({'left': i+'px'}, 20);
+        }, 20);
+
+      },
+      //window.onload=function(){setTimeout(start,1000)},
       pageHref (name) {
           let vm = this;
           if (name === "注册") {
@@ -92,6 +156,11 @@
           } else if (name === "我的团队") {
             vm.$router.push({'path': '/myTeam'});
           }
+      }
+    },
+    destroyed(){
+      if(this.timer) { //如果定时器在运行则关闭
+        clearInterval(this.timer);
       }
     }
   }
@@ -129,6 +198,36 @@
   }
 </style>
 <style lang="less" scoped>
+  #tgBigox{
+    position: relative;
+    width: 100%;
+    margin:0 auto;
+    height:30px;
+    line-height:30px;
+    padding-right:65px;
+    overflow:hidden;
+    display: block;
+  }
+  #tgGoox{
+    position: absolute;
+    height:30px;
+    line-height:30px;
+    top: 0px;
+    left: 60%;
+    display: block;
+    word-break: keep-all;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+  }
+  #tgGoox a{
+    color:#fff;
+    margin-left:8px;
+    float:left;
+  }
+  #tgGoox a:hover{
+    color:#57bc54;
+  }
 
 
 .infoCard{
@@ -167,6 +266,14 @@
       }
 
     }
+  }
+}
+.demo-carousel{
+  width:100%;
+  height:172px;
+  img{
+    width:100%;
+    height: 100%;
   }
 }
 .node-footer{

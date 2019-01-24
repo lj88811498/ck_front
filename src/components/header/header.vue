@@ -28,6 +28,7 @@
       <!--<a class="login-out" href="" @click="logout">登录</a>-->
     </div>
     <Icon type="ios-cog" class="img" @click="setting()"/>
+
     <!--<img src="../../../static/images/set.png" @click="setting()">-->
   </Header>
 </template>

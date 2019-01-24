@@ -24,8 +24,9 @@
             <p>  <Button type="default"   >已审核</Button></p>
           </div>
         </div>
-        <div v-if="detailData.length <= 0" style="padding-top: 5%">暂无历史订单</div>
+
       </div>
+      <div v-if="detailData.length <= 0" style="padding-top: 5%">暂无历史订单</div>
       <div v-if="!auditUp " class="audit">
         暂无历史订单！
       </div>

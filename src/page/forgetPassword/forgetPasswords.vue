@@ -214,7 +214,8 @@
 
   }
   .ivu-input-prefix i, .ivu-input-suffix i{
-    line-height: 40px;
-    font-size: 1.8rem;
+    line-height: 32px;
+    font-size: 2rem;
+    vertical-align: top;
   }
 </style>
