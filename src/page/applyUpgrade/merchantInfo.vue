@@ -14,7 +14,7 @@
     <div class="formValidate">
       <ul>
         <li v-for="(item,key) in detailData" v-if="detailData.length>0">
-          <p>姓名: {{item.userinfoName}}</p>
+          <p>姓名: {{item.userinfoNickname}}</p>
           <p>手机号码：{{item.userinfoTel}}</p>
           <p>微信号：{{item.userinfoWx}}</p>
         </li>
