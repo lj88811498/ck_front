@@ -27,8 +27,9 @@
             <p>  <Button type="default"  @click="submitApply('2',item.upgrade_id,item.userInfo_id)">拒绝</Button></p>
           </div>
         </div>
-        <div v-if="detailData.length <= 0" class="noContent">暂无审核内容</div>
+
       </div>
+      <div v-if="detailData.length <= 0" class="noContent">暂无审核内容</div>
       <div v-if="!auditUp" class="audit">
         暂无审核升级权限！
       </div>
