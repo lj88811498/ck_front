@@ -224,7 +224,7 @@
            float: right;
            margin-right: 15px;
            text-align: left;
-           width: 37%;
+           /*width: 37%;*/
 
          }
        }

@@ -16,7 +16,7 @@
       <div v-if="auditUp" class="item" v-for="(item,key) in detailData">
         <div  class="item_content" v-if="detailData.length > 0 && status">
           <div >
-            <p>对方ID：{{item.upgrade_id}}</p>
+            <p>对方ID：{{item.userInfo_id}}</p>
             <p>姓名：{{item.userInfo_nickname}}</p>
             <p>准等级：{{item.userInfo_lv}}</p>
             <p>手机号码：{{item.userInfo_tel}}</p>
@@ -115,12 +115,12 @@
         vm.$router.push({'path': '/historyList'});
       },
 
-      submitApply (status,upgradeId,userInfoId) {
+      submitApply (status,upgradeId) {
           let vm = this;
           let params = {
             upgradeId: upgradeId,
             upgradeStatus: status,
-            userinfoId: userInfoId
+            userinfoId: window.sessionStorage.getItem("userinfoId")
           };
         vm.api.auditEscalation(params).then((res) => {
           if (status === '1') {
