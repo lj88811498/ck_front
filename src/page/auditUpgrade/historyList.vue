@@ -15,7 +15,7 @@
       <div v-if="auditUp" class="item"  v-for="(item,key) in detailData">
         <div class="item_content" v-if="detailData.length>0">
           <div >
-            <p>对方ID：{{item.upgrade_id}}</p>
+            <p>对方ID：{{item.userInfo_id}}</p>
             <p>姓名：{{item.userInfo_nickname}}</p>
             <p>手机号码：{{item.userInfo_tel}}</p>
             <p>微信号：{{item.userInfo_wx}}</p>
