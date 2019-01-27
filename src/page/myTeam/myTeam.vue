@@ -18,15 +18,11 @@
           <p>成员信息</p>
           <p>一星及一星以上人数：{{total}}人</p>
         </li>
-        <li v-for="(item,key) in detail">
-          <div>
+        <li v-for="(item,key) in detail" class="blockLi">
             <p>昵称：{{item.userinfoNickname}}</p>
-            <p>手机号：{{item.userinfoTel}}</p>
-          </div>
-          <div>
             <p>等级：{{item.userinfoLv}}</p>
+            <p>手机号：{{item.userinfoTel}}</p>
             <p>微信：{{item.userinfoWx}}</p>
-          </div>
         </li>
       </ul>
     </div>
@@ -207,6 +203,11 @@
     }
 
   }
+  .blockLi{
+    padding-bottom: 15px;
+    padding-top: 15px;
+    margin-bottom: 20px;
+  }
   .formValidate{
    ul{
      padding: 0;
@@ -217,8 +218,8 @@
        border-bottom:1px solid #eaeaea;
        padding-left: 15px;
        background: #fff;
-       height: 70px;
-       line-height:27px;
+       /*height: 70px;*/
+       /*line-height:27px;*/
        font-size: 1.5rem;
        &:first-of-type{
          line-height: 46px;
