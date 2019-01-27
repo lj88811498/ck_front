@@ -47,6 +47,9 @@ export default {
   auditEscalation: { url: '/upgrade/auditEscalation', method: 'post'},
 
   //历史订单
-  historicalOrder: { url: '/upgrade/historicalOrder', method: 'get'}
+  historicalOrder: { url: '/upgrade/historicalOrder', method: 'get'},
+
+  //人数统计
+  auditorTotal: { url: '/upgrade/auditorTotal', method: 'get'}
 
 }
