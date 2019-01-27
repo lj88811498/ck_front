@@ -13,6 +13,7 @@
  */
 
 import myTeamPage from '@/page/myTeam/myTeam.vue'
+import sumPeoplePage from '@/page/myTeam/sumPeople.vue'
 
 export default [{
   path: '/myTeam',
@@ -21,4 +22,12 @@ export default [{
   meta: {
     authority: ['admin', 'security', 'auditor', 'user', 'assessor']
   }
-}]
+},
+  {
+    path: '/sumPeople',
+    name: 'SumPeople',
+    component: sumPeoplePage,
+    meta: {
+      authority: ['admin', 'security', 'auditor', 'user', 'assessor']
+    }
+  }]

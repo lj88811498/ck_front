@@ -10,6 +10,7 @@
     <div class="register_head">
       <Icon type="ios-arrow-back" class="backIcon" @click="back()"/>
       <span>我的团队({{myGroupSum}}人)</span>
+      <span @click="sumPeople()" class="rightInfo" v-if="sumPeopleShow">审核统计</span>
     </div>
     <div class="formValidate">
       <ul>
@@ -50,7 +51,8 @@
       return   {
         total:0,
         myGroupSum:0,
-        detail:[]
+        detail:[],
+        sumPeopleShow:false
 
       }
     },
@@ -60,6 +62,12 @@
     methods:{
       getDetailData () {
          let vm = this;
+         let showSum = window.sessionStorage.getItem("userinfoId");
+         if (showSum === '20001' || showSum === '20002') {
+           vm.sumPeopleShow = true;
+         } else {
+           vm.sumPeopleShow = false;
+         }
          let userInfoId = {
            userInfoId:window.sessionStorage.getItem("userinfoId")
          };
@@ -117,6 +125,13 @@
            vm.$Loading.error()
          })
       },
+
+      //人数统计
+      sumPeople () {
+        let vm = this;
+        vm.$router.push({'path': '/sumPeople'});
+      },
+
 
 
       back () {
@@ -182,6 +197,13 @@
     span:first-of-type{
       font-size: 1.8rem;
       /*font-weight: bold;*/
+    }
+    span.rightInfo{
+      position: absolute;
+      top: 0;
+      right: 11px;
+      color: #428bca;
+      cursor: pointer;
     }
 
   }

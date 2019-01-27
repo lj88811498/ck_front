@@ -80,28 +80,28 @@
             userInfoId: window.sessionStorage.getItem("userinfoId")
             //userInfoId: 7
           };
-          vm.api.orderList(userInfoId).then((res) => {
+          vm.api.orderList(userInfoId).then((res) => { //准等级
             for (let i = 0; i < res.length; i++) {
               if (res[i].userInfo_lv === '0') {
-                res[i].userInfo_lv = '普通会员';
-              } else if (res[i].userInfo_lv === '1') {
                 res[i].userInfo_lv = '一星会员';
-              } else if (res[i].userInfo_lv === '2') {
+              } else if (res[i].userInfo_lv === '1') {
                 res[i].userInfo_lv = '二星会员';
-              } else if (res[i].userInfo_lv === '3') {
+              } else if (res[i].userInfo_lv === '2') {
                 res[i].userInfo_lv = '三星会员';
-              } else if (res[i].userInfo_lv === '4') {
+              } else if (res[i].userInfo_lv === '3') {
                 res[i].userInfo_lv = '四星会员';
-              } else if (res[i].userInfo_lv === '5'){
+              } else if (res[i].userInfo_lv === '4') {
                 res[i].userInfo_lv = '五星会员';
-              } else if (res[i].userInfo_lv === '6') {
+              } else if (res[i].userInfo_lv === '5'){
                 res[i].userInfo_lv = '六星会员';
-              } else if (res[i].userInfo_lv === '7') {
+              } else if (res[i].userInfo_lv === '6') {
                 res[i].userInfo_lv = '七星会员';
-              } else if (res[i].userInfo_lv === '8') {
+              } else if (res[i].userInfo_lv === '7') {
                 res[i].userInfo_lv = '八星会员';
-              } else if (res[i].userInfo_lv === '9') {
+              } else if (res[i].userInfo_lv === '8') {
                 res[i].userInfo_lv = '九星会员';
+              } else if (res[i].userInfo_lv === '9') {
+                res[i].userInfo_lv = '暂无';
               }
             }
             vm.detailData = res;
