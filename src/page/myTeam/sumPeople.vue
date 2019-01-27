@@ -23,7 +23,7 @@
         <li v-if="detailData.length <=0">暂无信息</li>
 
       </ul>
-      <Page :total="totalSum" show-total class="pageTotal" @on-change="changeNum" @on-page-size-change="changePageSize"/>
+      <Page :total="totalSum" show-total class="pageTotal" show-sizer :page-size="5" :page-size-opts="[3,5,10]" @on-change="changeNum" @on-page-size-change="changePageSize"/>
     </div>
 
   </div>
@@ -46,7 +46,8 @@
       return   {
         detailData:[],
         totalSum :0,
-        current:1
+        current:1,
+        showSize:5
 
       }
     },
@@ -58,7 +59,8 @@
         let vm = this;
         let userInfoId = {
           userInfoId: 20001,
-          curPage: vm.current
+          curPage: vm.current,
+          size: vm.showSize
           // userInfoId: 9
         };
         vm.api.auditorTotal(userInfoId).then((data) => {
@@ -95,15 +97,18 @@
 
 
       changeNum (value) {
-        console.log(value);
+        // console.log(value);
         let vm = this;
         vm.current = value;
         vm.getDetailData();
       },
 
 
-      changePageSize () {
-
+      changePageSize (size) {
+        // console.log(size);
+        let vm = this;
+        vm.showSize = size;
+        vm.getDetailData();
       },
 
 
