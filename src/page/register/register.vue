@@ -90,7 +90,7 @@
         userinfoTel: [
           { required: true, message: '请输入手机号码', trigger: 'blur' },
           { type: 'number', message: '手机号码格式不正确', trigger: 'blur',transform(value){
-              let myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+              let myreg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
               if (!myreg.test(value)) {
                   return false;
               } else {
