@@ -108,12 +108,15 @@
   color: #515a6e;
   font-size: 14px;
   text-align: center;
-  position: absolute;
+
   bottom: 0;
   left: 40%;
 }
 </style>
 <style lang="less" scoped>
+  .ivu-layout-footer{
+    position: absolute;
+  }
   .register_head{
     height: 50px;
     line-height: 50px;
