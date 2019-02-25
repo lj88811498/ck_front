@@ -8,8 +8,12 @@
 <template>
   <Footer class="layout-footer-bar cl">
     <div class="copyRights">
-      {{copyRights.rights}}
-      <a :href="copyRights.href" target="_blank">{{copyRights.company}}</a>
+      <div style="width:300px;margin:0 auto; padding:20px 0;">
+        <p>蜀ICP备19004437号-1</p>
+        <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=51012402000359" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+          <img src="../../static/images/beian.png" style="float:left;">
+          <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">川公网安备 51012402000359号</p></a>
+      </div>
     </div>
   </Footer>
 </template>

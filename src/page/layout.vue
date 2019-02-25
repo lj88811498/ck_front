@@ -12,8 +12,16 @@
       <Content>
         <router-view/>
       </Content>
-      <!--<Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer>-->
+
     </Layout>
+    <Footer class="layout-footer-center">
+      <div style="width:300px;margin:0 auto;">
+        <p>蜀ICP备19004437号-1</p>
+        <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=51012402000359" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+          <img src="../../static/images/beian.png" style="float:left;">
+          <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">川公网安备 51012402000359号</p></a>
+      </div>
+    </Footer>
   </div>
 </template>
 
@@ -22,183 +30,59 @@
 
   import Header from '../components/header/header.vue'
   import Navs from '../components/navs/navs.vue'
-  import Footer from '../components/footer/footer.vue'
+//  import Footer from '../components/footer/footer.vue'
 
   export default{
     name: 'Layouts',
     components: {
       Header,
       Navs,
-      Footer
+//      Footer
     },
     data () {
       return {
         isCollapsed: false,
-        navsOptions: {
-          title: '政务数据交换平台',
-          authority: sessionStorage.getItem('authority'),
-          data: [
-            {
-              navId: 9,
-              label: '系统概览',
-              icon: 'md-speedometer',
-              isParent: true,
-              childrenUrl: ['/nodeOverview', '/logging'],
-              authority: ['admin', 'security', 'auditor', 'user', 'assessor'],
-              children: [
-                {
-                  navId: 91,
-                  label: '节点概览',
-                  frontUrl: '/nodeOverview',
-                  authority: ['admin', 'security', 'auditor', 'user', 'assessor']
-                },
-                {
-                  navId: 92,
-                  label: '登录日志',
-                  frontUrl: '/logging',
-                  authority: ['admin', 'security', 'auditor', 'user', 'assessor']
-                },
-                {
-                  navId: 93,
-                  label: '系统通知',
-                  frontUrl: '/systemNotification',
-                  authority: ['user', 'security','assessor']
-                }
-              ]
 
-            },
-            {
-              navId: 1,
-              label: '数据资源管理',
-              icon: 'logo-buffer',
-              isParent: true,
-              childrenUrl: ['/source', '/catalog', '/sourceAudit', '/catalogAudit', '/subscriptionAudit'],
-              authority: ['user', 'assessor'],
-              children: [
-                {
-                  navId: 11,
-                  label: '资源管理',
-                  frontUrl: '/source',
-                  authority: ['user']
-                },
-                {
-                  navId: 12,
-                  label: '目录管理',
-                  frontUrl: '/catalog',
-                  authority: ['user']
-                },
-                {
-                  navId: 13,
-                  label: '资源审核',
-                  frontUrl: '/sourceAudit',
-                  authority: ['assessor']
-                },
-                {
-                  navId: 14,
-                  label: '目录审核',
-                  frontUrl: '/catalogAudit',
-                  authority: ['assessor']
-                },
-                {
-                  navId: 15,
-                  label: '订阅授权',
-                  frontUrl: '/subscriptionModeration',
-                  authority: ['assessor']
-                }
-              ]
-            },
-            {
-              navId: 2,
-              label: '资源交换管理',
-              icon: 'md-sync',
-              isParent: true,
-              childrenUrl: ['/sourceSubscription', '/allSub', '/sourceManagement', '/sourceManagementAudit'],
-              authority: ['user', 'assessor'],
-              children: [
-                {
-                  navId: 21,
-                  label: '资源集市',
-                  frontUrl: '/sourceSubscription',
-                  authority: ['user']
-                },
-                {
-                  navId: 22,
-                  label: '所有订阅',
-                  frontUrl: '/allSub',
-                  authority: ['user']
-                },
-                {
-                  navId: 23,
-                  label: '资源管理',
-                  frontUrl: '/resourceManagement',
-                  authority: ['user']
-                },
-                {
-                  navId: 24,
-                  label: '订阅授权',
-                  frontUrl: '/subscriptionModeration1',
-                  authority: ['assessor']
-                }
-              ]
-            },
-            {
-              navId: 3,
-              label: '审计管理',
-              icon: 'md-create',
-              isParent: true,
-              childrenUrl: ['/logging', '/operation'],
-              authority: ['auditor'],
-              children: [
-                {
-                  navId: 31,
-                  label: '登录审计',
-                  frontUrl: '/logging',
-                  authority: ['auditor']
-                },
-                {
-                  navId: 32,
-                  label: '操作审计',
-                  frontUrl: '/operation',
-                  authority: ['auditor']
-                }
-              ]
-            },
-            {
-              navId: 4,
-              label: '机构用户管理',
-              icon: 'md-people',
-              isParent: true,
-              childrenUrl: ['/userManage', '/assignRole'],
-              authority: ['admin', 'security'],
-              children: [
-                {
-                  navId: 41,
-                  label: '用户管理',
-                  frontUrl: '/userManage',
-                  authority: ['admin']
-                },
-                {
-                  navId: 42,
-                  label: '分配角色',
-                  frontUrl: '/assignRole',
-                  authority: ['security']
-                }
-              ]
-            }
-          ]
-        }
       }
     }
   }
 </script>
+<style>
+  @media only screen and (max-width: 768px) {
+  /*  .layout{
+      min-height: 850px!important;
+    }
+    .layout-footer-center{
+      left: 12%!important;
+    }*/
 
+  }
+  .ivu-layout{
+  flex:1 0 auto!important;
+  }
+  .ivu-layout-footer{
+    padding: 0!important;
+    background: none!important;
+  }
+</style>
 <style lang="less" scoped>
+  #app{
+
+  }
   .layout{
     /*border: 1px solid #d7dde4;*/
     /*background: #f5f7f9;*/
-    position: relative;
+    /*position: relative;*/
+    /*flex: 1;*/
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    min-height: 100vh;
+    flex-direction: column;
+
     border-radius: 4px;
-    overflow: hidden;
+    /*overflow: hidden;*/
+    /*min-height: 970px;*/
+    /*height: 100%;*/
   }
   .layout-logo{
     width: 100px;
@@ -216,6 +100,15 @@
     margin-right: 20px;
   }
   .layout-footer-center{
+    background: none!important;
+    /*padding: 24px 50px;*/
+    color: #515a6e;
+    font-size: 14px;
     text-align: center;
+    margin-top: 10px;
+    /*position: fixed;*/
+    bottom: 0;
+    /*left: 30%;*/
+    flex:0 0 auto;
   }
 </style>

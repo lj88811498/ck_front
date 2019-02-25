@@ -19,6 +19,14 @@
       </FormItem>
     </Form>
     <div class="forgetPassword" @click="forgetPassword()">忘记密码</div>
+    <Footer class="layout-footer-center">
+      <div style="width:300px;margin:0 auto; padding:20px 0;">
+        <p>蜀ICP备19004437号-1</p>
+        <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=51012402000359" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+          <img src="../../static/images/beian.png" style="float:left;">
+          <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">川公网安备 51012402000359号</p></a>
+      </div>
+    </Footer>
   </div>
 
 </template>
@@ -90,8 +98,20 @@
     line-height: 38px;
     font-size: 3rem!important;
   }
+  .ivu-layout-footer{
+    left: 0%!important;
+  }
 }
-
+.ivu-layout-footer {
+   background: none!important;
+  padding: 24px 50px;
+  color: #515a6e;
+  font-size: 14px;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  left: 40%;
+}
 </style>
 <style lang="less" scoped>
   .register_head{

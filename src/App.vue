@@ -21,6 +21,11 @@ import LoginForm from './components/loginForm'
   @import "./assets/less/common.less";
   #app{
     height: 100%;
+    /*position: relative;*/
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    min-height: 100vh;
+    flex-direction: column;
   }
   .ivu-layout-sider-trigger{
     display: none;
